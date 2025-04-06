@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <script src="src/netcode.js"></script>
+        <link type="text/css" href="src/style.css" rel="stylesheet" />
+    </head>
+    <body>
+        <div class="loading" style="display:none;">Loading</div>
+        <button onclick="createNewList()">Create New List</button>
+        <div id="lists"></div>
+        <template id="listsTemplate">
+            <div style="margin-left:30px;">
+                <h2>{title} <button onclick="deleteList({id})">x</button></h2>
+                <div id="list{id}tasks"></div>
+                <button onclick="addTask({id})">Add New Task</button>
+            </div>
+        </template>
+        <template id="tasksTemplate">
+            <div style="margin-left:30px;">
+                <h2><input placeholder="Enter Task Title" value="{title}" onblur="changeTaskTitle({listId},{id},event.target.value)"/> 
+                    <button onclick="deleteTask({listId},{id})">x</button>
+                    <button>&#10021;</button></h2>
+                <input type="checkbox"/><br/><br/>
+                <button onclick="addSubTask({id})">Add New Sub Task</button>
+                <hr />
+            </div>
+        </template>
+    </body>
+    <script src="src/main.js"></script>
+</html>

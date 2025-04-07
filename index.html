@@ -34,7 +34,10 @@
                 <input placeholder="Enter Task Title" value="{title}"
                     onblur="changeTaskTitle({listId},{id},event.target.value)" />
                 <button onclick="openMenu({listId}, {id}, event.target)">&#9776;</button>
-                <button onclick="toggleSubtasksVisible({listId},{id})" class="{toggled}">&#8249;</button>
+                <button onclick="toggleSubtasksVisible({listId},{id})">
+                    <div class="{toggled}">&#8249;</div>
+                    <span class="badge">{subTaskLength}</span>
+                </button>
             </h3>
             <div class="menu {menuOpen}">
                 <div class="backdrop" onclick="closeMenu({listId}, {id})">
@@ -47,8 +50,8 @@
                     <li onclick="deleteTask({listId},{id})">Delete</li>
                 </ul>
             </div>
-            
-            <div class="{toggled}">
+
+            <div class="subTaskContainer {toggled}">
                 <div id="list{listId}task{id}subtasks"></div>
             </div>
             <hr />
@@ -57,7 +60,7 @@
     <template id="subTasksTemplate">
         <div style="margin-left:5vw;" class="subtask">
             <h4><input id="completedCheckSubList{listId}task{taskId}subtask{id}" type="checkbox" {checked}
-                onclick="toggleTaskCompleted({listId},{id},event.target.checked)" />
+                    onclick="toggleSubtaskCompleted({listId},{taskId},{id},event.target.checked)" />
                 <input placeholder="Enter Subtask Title" value="{title}"
                     onblur="changeSubtaskTitle({listId},{taskId}, {id},event.target.value)" />
                 <button onclick="deleteSubtask({listId},{taskId}, {id})">x</button>

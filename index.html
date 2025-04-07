@@ -1,29 +1,73 @@
 <html>
-    <head>
-        <script src="src/netcode.js"></script>
-        <link type="text/css" href="src/style.css" rel="stylesheet" />
-    </head>
-    <body>
-        <div class="loading" style="display:none;">Loading</div>
-        <button onclick="createNewList()">Create New List</button>
-        <div id="lists"></div>
-        <template id="listsTemplate">
-            <div style="margin-left:30px;">
-                <h2>{title} <button onclick="deleteList({id})">x</button></h2>
+
+<head>
+    <script src="src/queryStub.js"></script>
+    <script src="src/template.js"></script>
+    <script src="src/netcode.js"></script>
+    <link type="text/css" href="src/style.css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <div class="loading" style="opacity:0;">Loading</div>
+    <button onclick="createNewList()">Create New List</button>
+
+    <div id="lists"></div>
+
+    <template id="listsTemplate">
+        <div class="list">
+            <h1><button onclick="toggleListVisible({id})" class="{toggled}">&#8249;</button>
+                <input placeholder="Enter List Title" value="{title}"
+                    onblur="changeListTitle({id},event.target.value)" /> <button onclick="deleteList({id})">x</button>
+            </h1>
+            <div class="{toggled}">
                 <div id="list{id}tasks"></div>
                 <button onclick="addTask({id})">Add New Task</button>
             </div>
-        </template>
-        <template id="tasksTemplate">
-            <div style="margin-left:30px;">
-                <h2><input placeholder="Enter Task Title" value="{title}" onblur="changeTaskTitle({listId},{id},event.target.value)"/> 
-                    <button onclick="deleteTask({listId},{id})">x</button>
-                    <button>&#10021;</button></h2>
-                <input type="checkbox"/><br/><br/>
-                <button onclick="addSubTask({id})">Add New Sub Task</button>
-                <hr />
+        </div>
+    </template>
+    <template id="tasksTemplate">
+        <div style="margin-left:5vw;">
+            <h3>
+                <input id="completedCheckList{listId}task{id}" type="checkbox" {checked}
+                    onclick="toggleTaskCompleted({listId},{id},event.target.checked)" />
+                <input placeholder="Enter Task Title" value="{title}"
+                    onblur="changeTaskTitle({listId},{id},event.target.value)" />
+                <button onclick="openMenu({listId}, {id}, event.target)">&#9776;</button>
+                <button onclick="toggleSubtasksVisible({listId},{id})" class="{toggled}">&#8249;</button>
+            </h3>
+            <div class="menu {menuOpen}">
+                <div class="backdrop" onclick="closeMenu({listId}, {id})">
+                </div>
+                <ul class="menuList" style="left: {menuLeft}px; top: {menuTop}px">
+                    <li onclick="moveTaskUp({listId}, {id})">Move Up</li>
+                    <li onclick="moveTaskDown({listId}, {id})">Move Down</li>
+                    <li onclick="addSubTask({listId},{id})">Add Sub Task</li>
+                    <li></li>
+                    <li onclick="deleteTask({listId},{id})">Delete</li>
+                </ul>
             </div>
-        </template>
-    </body>
-    <script src="src/main.js"></script>
+            
+            <div class="{toggled}">
+                <div id="list{listId}task{id}subtasks"></div>
+            </div>
+            <hr />
+        </div>
+    </template>
+    <template id="subTasksTemplate">
+        <div style="margin-left:5vw;" class="subtask">
+            <h4><input id="completedCheckSubList{listId}task{taskId}subtask{id}" type="checkbox" {checked}
+                onclick="toggleTaskCompleted({listId},{id},event.target.checked)" />
+                <input placeholder="Enter Subtask Title" value="{title}"
+                    onblur="changeSubtaskTitle({listId},{taskId}, {id},event.target.value)" />
+                <button onclick="deleteSubtask({listId},{taskId}, {id})">x</button>
+                <button onclick="moveSubtaskUp({listId},{taskId}, {id})">&#8963;</button>
+                <button onclick="moveSubtaskDown({listId},{taskId}, {id})">&#8964;</button>
+            </h4>
+        </div>
+    </template>
+
+</body>
+<script src="src/main.js"></script>
+
 </html>
